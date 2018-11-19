@@ -1,23 +1,45 @@
 var numSquares=6;
-var colors=generateRandomColors(6);
+//var colors=generateRandomColors(6);
+var colors=[];
 var squares=document.querySelectorAll(".square");
-var pickedColor=pickColor();
+//var pickedColor=pickColor();
+var pickedColor;
 var colorDisplay=document.getElementById("colorDisplay");
 var message=document.getElementById("message");
 var title=document.getElementById("title");
 var resetButton=document.getElementById("reset");
-var easyButton=document.getElementById("easy");
-var hardButton=document.getElementById("hard");
+var modeButtons=document.querySelectorAll(".mode")
 
 
 ///////////////////Definitios end here////////////////////////////
-
-
-colorDisplay.textContent=pickedColor;
+init();
+function init()
+{
+	////////////////Loop Through Mode Buttons///////////////////////
+for(var i=0;i<modeButtons.length;i++)
+{
+ modeButtons[i].addEventListener("click",function(){
+ 	modeButtons[0].classList.remove("selected");
+ 	modeButtons[1].classList.remove("selected");
+ 	this.classList.add("selected")
+ 	//figure out how many scores to show
+ 	if(this.textContent==="Easy"){
+ 		numSquares=3
+ 	}
+ 	else
+ 	{
+ 		numSquares=6;
+ 	}
+ 	reset();
+ 	//pick new colors
+ 	//pick a new picked color
+ 	//update page to reflect all changes
+ })
+}
 for(var i=0;i<squares.length;i++)
 {   
 	//Add Initial colors to square
-	squares[i].style.backgroundColor=colors[i];
+	//squares[i].style.backgroundColor=colors[i];
 	    //add click listeners to squares
     squares[i].addEventListener("click",function(){
     	
@@ -38,76 +60,14 @@ for(var i=0;i<squares.length;i++)
     	}
     });
 }
+reset();
 
+}
 resetButton.addEventListener("click",function(){
-	numSquares=6;
-	//generate all new colors
-	colors=generateRandomColors(numSquares);
-	//pick a new random color from array
-	pickedColor=pickColor();
-	//change color display to new color
-	//change message to empty string
-	message.textContent="";
-	// change play again to new colors after clicking on text content
-	this.textContent="New Colors";
-	colorDisplay.textContent=pickedColor;
-	//change colors of squares from the page
-     for(var i =0; i < squares.length; i++) {
-     	squares[i].style.backgroundColor=colors[i];
-     }
-     title.style.backgroundColor="steelblue";
-     title.style.color="white";
+reset();
 
 })
 
-/////Edited Code to chnage between easy and hard
-
-easyButton.addEventListener("click",function(){
-	numSquares=3;
-	hardButton.classList.remove("selected")
-	easyButton.classList.add("selected")
-	colors=generateRandomColors(numSquares);
-	//pick a new random color from array
-	pickedColor=pickColor();
-	//change color display to new color
-	
-	colorDisplay.textContent=pickedColor;
-	//change colors of squares from the page
-     for(var i =0; i < squares.length; i++) {
-     	if (colors[i]) 
-     	{
-     		squares[i].style.backgroundColor=colors[i];
-     	}
-     	else
-     	{
-     		squares[i].style.display="none";
-     	}
-     }
-      title.style.backgroundColor="steelblue";
-     title.style.color="white";
-
-
-})
-hardButton.addEventListener("click",function(){
-	numSquares=6;
-	easyButton.classList.remove("selected")
-	hardButton.classList.add("selected")
-	colors=generateRandomColors(numSquares);
-	//pick a new random color from array
-	pickedColor=pickColor();
-	//change color display to new color
-	
-	colorDisplay.textContent=pickedColor;
-	//change colors of squares from the page
-     for(var i =0; i < squares.length; i++) {
-     	squares[i].style.backgroundColor=colors[i];
-     	squares[i].style.display="block";
-     }
-        title.style.backgroundColor="steelblue";
-     title.style.color="white";
-
-    
-})
 /////////Function declaration///////////////////////
 ///////////FUNCTIONS START HERE//////////
 function changeColor(desiredColor)//.To change the colors of squares after getting right answer
@@ -149,5 +109,35 @@ var green=Math.floor(Math.random()*256);
 var blue=Math.floor(Math.random()*256);
 
 return "rgb("+red+", "+green+", "+blue+")"
+
+}
+function reset(){
+
+	//generate all new colors
+	colors=generateRandomColors(numSquares);
+	//pick a new random color from array
+	pickedColor=pickColor();
+	//change color display to new color
+	//change message to empty string
+	
+	// change play again to new colors after clicking on text content
+	colorDisplay.textContent=pickedColor;
+	resetButton.textContent="New Colors";
+	message.textContent="";
+	//change colors of squares from the page
+     for(var i =0; i < squares.length; i++) {
+     	if(colors[i])
+     	{
+     		squares[i].style.display="block";
+     		squares[i].style.backgroundColor=colors[i];
+     	}
+     	else
+     	{
+     		squares[i].style.display="none";
+     	}
+     }
+     title.style.backgroundColor="steelblue";
+     title.style.color="white";
+
 
 }
